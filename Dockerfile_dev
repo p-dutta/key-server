@@ -1,0 +1,19 @@
+FROM golang:latest
+
+# Enviroment variable
+WORKDIR /go/src/key-server
+
+RUN go install github.com/cosmtrek/air@latest
+
+#Copying files to work directory
+# COPY .env.bak .env
+COPY go.mod ./
+RUN go mod download && go mod verify
+COPY . .
+# COPY .env.bak .env
+# RUN cp /go/src/key-server/.env.bak /go/src/key-server/.env
+
+ENV TZ=Asia/Dhaka
+
+# Run and expose the server on port 3000
+EXPOSE 9000
